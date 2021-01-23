@@ -11,15 +11,12 @@ import { selectUser } from './selectors';
  */
 
 export function* signupUser(reqBody: PayloadAction<ISignupRequest>) {
-  let form_data = new FormData();
-  for (let key in reqBody) {
-    form_data.append(key, reqBody[key]);
-  }
   const requestURL = `http://localhost:3000/api/auth/signup`;
   try {
     const user: IUserResponse = yield call(request, requestURL, {
       method: 'post',
-      body: form_data,
+      body: JSON.stringify(reqBody.payload),
+      headers: { 'Content-Type': 'application/json' },
     });
     if (user) {
       yield put(userActions.signupUserSuccess(user));
@@ -41,15 +38,12 @@ export function* signupSaga() {
  */
 
 export function* signinUser(reqBody: PayloadAction<ISigninRequest>) {
-  let form_data = new FormData();
-  for (let key in reqBody) {
-    form_data.append(key, reqBody[key]);
-  }
   const requestURL = `http://localhost:3000/api/auth/signin`;
   try {
     const user: IUserResponse = yield call(request, requestURL, {
       method: 'post',
-      body: form_data,
+      body: JSON.stringify(reqBody.payload),
+      headers: { 'Content-Type': 'application/json' },
     });
     if (user) {
       yield put(userActions.signinUserSuccess(user));

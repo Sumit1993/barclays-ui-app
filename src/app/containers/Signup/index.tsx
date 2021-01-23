@@ -22,6 +22,11 @@ import { useTranslation } from 'react-i18next';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { messages } from './messages';
+import { ISignupRequest } from '../../../store/user/types';
+import { useDispatch } from 'react-redux';
+import { sliceKey, userActions } from '../../../store/user/slice';
+import { useInjectSaga } from 'redux-injectors';
+import { signupSaga } from '../../../store/user/saga';
 
 interface Props {}
 
@@ -46,10 +51,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function Signup(props: Props) {
+  useInjectSaga({ key: sliceKey, saga: signupSaga });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [first, setFirst] = React.useState<string>('');
+  const [last, setLast] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const formSubmit = () => {
+    const signupInfo: ISignupRequest = {
+      name: first + ' ' + last,
+      email,
+      password,
+    };
+    dispatch(userActions.signupUser(signupInfo));
+  };
 
   return (
     <>
@@ -77,6 +97,7 @@ export function Signup(props: Props) {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={event => setFirst(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -88,6 +109,7 @@ export function Signup(props: Props) {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  onChange={event => setLast(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -99,6 +121,7 @@ export function Signup(props: Props) {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={event => setEmail(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -111,6 +134,7 @@ export function Signup(props: Props) {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={event => setPassword(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -123,11 +147,12 @@ export function Signup(props: Props) {
               </Grid>
             </Grid>
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={formSubmit}
             >
               Sign Up
             </Button>

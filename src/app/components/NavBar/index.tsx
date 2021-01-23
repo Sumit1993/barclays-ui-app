@@ -16,6 +16,7 @@ import {
   Badge,
   Menu,
   MenuItem,
+  Box,
 } from '@material-ui/core';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import SearchIcon from '@material-ui/icons/Search';
@@ -92,10 +93,10 @@ export function NavBar(props: Props) {
       {props.isLoggedin ? (
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       ) : (
-        <>
+        <Box>
           <MenuItem onClick={handleSignin}>Signin</MenuItem>
           <MenuItem onClick={handleSignup}>Signup</MenuItem>
-        </>
+        </Box>
       )}
     </Menu>
   );
@@ -111,7 +112,7 @@ export function NavBar(props: Props) {
       onClose={handleMobileMenuClose}
     >
       {props.isLoggedin ? (
-        <>
+        <Box>
           <MenuItem onClick={goToCart}>
             <IconButton aria-label="show 11 new notifications" color="inherit">
               <Badge badgeContent={11} color="secondary">
@@ -131,9 +132,9 @@ export function NavBar(props: Props) {
             </IconButton>
             <p>Logout</p>
           </MenuItem>
-        </>
+        </Box>
       ) : (
-        <>
+        <Box>
           <MenuItem onClick={handleSignin}>
             <IconButton
               aria-label="account of current user"
@@ -156,7 +157,7 @@ export function NavBar(props: Props) {
             </IconButton>
             <p>Signup</p>
           </MenuItem>
-        </>
+        </Box>
       )}
     </Menu>
   );
