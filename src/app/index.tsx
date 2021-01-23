@@ -18,6 +18,8 @@ import { NavBar } from './containers/NavBar/index';
 import { Landing } from './containers/Landing/Loadable';
 import { Cart } from './containers/Cart/Loadable';
 import { makeStyles, Container } from '@material-ui/core';
+import { Signup } from './containers/Signup/Loadable';
+import { Signin } from './containers/Signin/Loadable';
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -42,6 +44,8 @@ export function App() {
         <Switch>
           <Route exact path="/" component={Landing} />
           <Route exact path="/cart" component={Cart} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/signin" component={Signin} />
           <Route component={NotFoundPage} />
         </Switch>
         <GlobalStyle />
