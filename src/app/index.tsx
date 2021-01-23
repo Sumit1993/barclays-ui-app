@@ -12,9 +12,10 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
 
-import { HomePage } from './containers/HomePage/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
+import { NavBar } from './containers/NavBar/index';
+import { Landing } from './containers/Landing/Loadable';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -27,9 +28,9 @@ export function App() {
       >
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
-
+      <NavBar />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={Landing} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
