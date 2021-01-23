@@ -1,4 +1,5 @@
 import { LandingState } from 'app/containers/Landing/types';
+import { CartState } from 'app/containers/Cart/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -7,5 +8,6 @@ import { LandingState } from 'app/containers/Landing/types';
 */
 export interface RootState {
   landing?: LandingState;
+  cart?: CartState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

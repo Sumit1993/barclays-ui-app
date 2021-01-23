@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from 'serviceWorker';
 
 // Use consistent styling
-import 'sanitize.css/sanitize.css';
+// import 'sanitize.css/sanitize.css';
 
 // Import root app
 import { App } from 'app';
@@ -25,7 +25,7 @@ import { configureAppStore } from 'store/configureStore';
 
 // Initialize languages
 import './locales/i18n';
-import { ThemeProvider } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 
 const store = configureAppStore();
@@ -33,6 +33,7 @@ const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
+    <CssBaseline />
     <Provider store={store}>
       <HelmetProvider>
         <React.StrictMode>

@@ -16,24 +16,36 @@ import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { NavBar } from './containers/NavBar/index';
 import { Landing } from './containers/Landing/Loadable';
+import { Cart } from './containers/Cart/Loadable';
+import { makeStyles, Container } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  cardGrid: {
+    padding: theme.spacing(6),
+  },
+}));
 
 export function App() {
   const { i18n } = useTranslation();
+  const classes = useStyles();
   return (
     <BrowserRouter>
       <Helmet
-        titleTemplate="%s - React Boilerplate"
-        defaultTitle="React Boilerplate"
+        titleTemplate="%s - Barclays UI APP"
+        defaultTitle="Barclays UI APP"
         htmlAttributes={{ lang: i18n.language }}
       >
-        <meta name="description" content="A React Boilerplate application" />
+        <meta name="description" content="A Barclays UI APP" />
       </Helmet>
       <NavBar />
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route component={NotFoundPage} />
-      </Switch>
-      <GlobalStyle />
+      <Container className={classes.cardGrid} maxWidth="lg">
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/cart" component={Cart} />
+          <Route component={NotFoundPage} />
+        </Switch>
+        <GlobalStyle />
+      </Container>
     </BrowserRouter>
   );
 }

@@ -22,12 +22,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { AccountCircle } from '@material-ui/icons';
 import { useStyles } from './styles';
+import { useHistory } from 'react-router-dom';
 
 interface Props {}
 
 export function NavBar(props: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
+
+  const history = useHistory();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -50,6 +53,10 @@ export function NavBar(props: Props) {
 
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const goToCart = event => {
+    history.push('./cart');
   };
 
   const classes = useStyles();
@@ -78,7 +85,7 @@ export function NavBar(props: Props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={goToCart}>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <ShoppingCart />
@@ -122,7 +129,11 @@ export function NavBar(props: Props) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={goToCart}
+            >
               <Badge badgeContent={17} color="secondary">
                 <ShoppingCart />
               </Badge>
