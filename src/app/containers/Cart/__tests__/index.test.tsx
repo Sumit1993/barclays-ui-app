@@ -23,7 +23,7 @@ describe('<Cart />', () => {
     store = configureAppStore();
   });
   it('should match the snapshot', () => {
-    const component = renderComponent(store);
+    const component = renderComponent(store.store);
     expect(component.container.firstChild).toMatchSnapshot();
   });
 });

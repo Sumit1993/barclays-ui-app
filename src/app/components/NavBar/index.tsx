@@ -23,14 +23,19 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { AccountCircle } from '@material-ui/icons';
 import { useStyles } from './styles';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../../store/user/slice';
 
-interface Props {}
+interface Props {
+  isLoggedin: boolean;
+}
 
 export function NavBar(props: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -57,6 +62,19 @@ export function NavBar(props: Props) {
 
   const goToCart = event => {
     history.push('./cart');
+    handleMenuClose();
+  };
+  const handleLogout = () => {
+    dispatch(userActions.logoutUser());
+    handleMenuClose();
+  };
+  const handleSignin = () => {
+    history.push('./signin');
+    handleMenuClose();
+  };
+  const handleSignup = () => {
+    history.push('./signup');
+    handleMenuClose();
   };
 
   const classes = useStyles();
@@ -71,7 +89,14 @@ export function NavBar(props: Props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      {props.isLoggedin ? (
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      ) : (
+        <>
+          <MenuItem onClick={handleSignin}>Signin</MenuItem>
+          <MenuItem onClick={handleSignup}>Signup</MenuItem>
+        </>
+      )}
     </Menu>
   );
 
@@ -85,25 +110,54 @@ export function NavBar(props: Props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={goToCart}>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {props.isLoggedin ? (
+        <>
+          <MenuItem onClick={goToCart}>
+            <IconButton aria-label="show 11 new notifications" color="inherit">
+              <Badge badgeContent={11} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+            <p>Cart</p>
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Logout</p>
+          </MenuItem>
+        </>
+      ) : (
+        <>
+          <MenuItem onClick={handleSignin}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Signin</p>
+          </MenuItem>
+          <MenuItem onClick={handleSignup}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Signup</p>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 
@@ -114,30 +168,34 @@ export function NavBar(props: Props) {
           <Typography className={classes.title} variant="h6" noWrap>
             Books
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {props.isLoggedin && (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          )}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={goToCart}
-            >
-              <Badge badgeContent={17} color="secondary">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
+            {props.isLoggedin && (
+              <IconButton
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={goToCart}
+              >
+                <Badge badgeContent={17} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
+            )}
             <IconButton
               edge="end"
               aria-label="account of current user"

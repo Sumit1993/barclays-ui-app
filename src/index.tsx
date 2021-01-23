@@ -27,6 +27,7 @@ import { configureAppStore } from 'store/configureStore';
 import './locales/i18n';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import theme from './theme';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const store = configureAppStore();
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
@@ -34,12 +35,14 @@ const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Provider store={store}>
-      <HelmetProvider>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      </HelmetProvider>
+    <Provider store={store.store}>
+      <PersistGate loading={null} persistor={store.persistor}>
+        <HelmetProvider>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </HelmetProvider>
+      </PersistGate>
     </Provider>
   </ThemeProvider>,
   MOUNT_NODE,

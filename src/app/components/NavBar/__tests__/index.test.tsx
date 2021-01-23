@@ -5,7 +5,7 @@ import { NavBar } from '..';
 
 describe('<NavBar  />', () => {
   it('should match snapshot', () => {
-    const loadingIndicator = render(<NavBar />);
+    const loadingIndicator = render(<NavBar isLoggedin={false} />);
     expect(loadingIndicator.container.firstChild).toMatchSnapshot();
   });
 });
