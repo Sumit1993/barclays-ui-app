@@ -7,6 +7,7 @@ describe('<CartItems  />', () => {
   it('should match snapshot', () => {
     const loadingIndicator = render(
       <CartItems
+        subTotal={10}
         items={[
           {
             bookID: 2,

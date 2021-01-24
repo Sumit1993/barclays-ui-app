@@ -68,16 +68,12 @@ export function* logoutUser() {
   const requestURL = `http://localhost:3000/api/auth/logout`;
   try {
     const userData = yield select(selectUser);
-    const user: IUserResponse = yield call(request, requestURL, {
+    yield call(request, requestURL, {
       headers: {
         Authorization: `Bearer ${userData.userInfo.token}`,
       },
     });
-    if (user) {
-      yield put(userActions.logoutUserSuccess(user));
-    } else {
-      yield put(userActions.logoutUserError('Logout Error'));
-    }
+    yield put(userActions.logoutUserSuccess());
   } catch (err) {
     yield put(userActions.logoutUserError('Logout Error'));
   }

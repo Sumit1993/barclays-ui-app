@@ -25,10 +25,7 @@ export function Cart(props: Props) {
   useInjectReducer({ key: sliceKey, reducer: reducer });
   useInjectSaga({ key: sliceKey, saga: addCartSaga });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cart = useSelector(selectCart);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
@@ -41,7 +38,10 @@ export function Cart(props: Props) {
       </Helmet>
       {cart.cartInfo?.items.length ? (
         <Grid container justify="flex-start">
-          <CartItems items={cart.cartInfo.items} />
+          <CartItems
+            items={cart.cartInfo.items}
+            subTotal={cart.cartInfo.subTotal}
+          />
           <CartPrice subTotal={cart.cartInfo.subTotal} />
         </Grid>
       ) : (

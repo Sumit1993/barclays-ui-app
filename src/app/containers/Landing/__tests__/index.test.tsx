@@ -23,7 +23,7 @@ describe('<Landing />', () => {
     store = configureAppStore();
   });
   it('should match the snapshot', () => {
-    const component = renderComponent(store.store);
+    const component = renderComponent(store);
     expect(component.container.firstChild).toMatchSnapshot();
   });
 });

@@ -27,7 +27,6 @@ import { useStyles } from './styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutSaga } from '../../../store/user/saga';
-import { useInjectSaga, useInjectReducer } from 'redux-injectors';
 import {
   userActions,
   reducer as reducer1,
@@ -45,6 +44,10 @@ import {
 } from '../../../store/cart/slice';
 import { searchBookSaga } from '../../../store/book/saga';
 import { selectCart } from '../../../store/cart/selectors';
+import {
+  useInjectReducer,
+  useInjectSaga,
+} from '../../../utils/redux-injectors';
 
 interface Props {
   isLoggedin: boolean;
@@ -115,7 +118,7 @@ export function NavBar(props: Props) {
       dispatch(
         bookActions.searchBook({
           searchText: searchText,
-          paginationOptions: { page: 1, limit: 10, sort: 'average_rating' },
+          paginationOptions: { page: 1, limit: 12, sort: 'average_rating' },
         }),
       );
     }

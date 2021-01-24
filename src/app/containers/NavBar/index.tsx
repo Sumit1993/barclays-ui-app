@@ -27,7 +27,7 @@ export function NavBar(props: Props) {
     if (!user.userInfo) {
       history.replace('/signup');
     }
-  }, [user]);
+  }, []);
 
   return <NavBarComponent isLoggedin={!!user.userInfo} />;
 }

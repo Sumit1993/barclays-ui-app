@@ -7,8 +7,13 @@ import {
   IUserResponse,
 } from './types';
 
+const userData = window.localStorage.getItem('user');
 // The initial state of the Home container
 export const initialState: ContainerState = { loading: false, error: null };
+
+if (userData) {
+  initialState.userInfo = JSON.parse(userData);
+}
 
 const userSlice = createSlice({
   name: 'user',
@@ -24,6 +29,7 @@ const userSlice = createSlice({
         token,
       } = action.payload;
       state.userInfo = { email, name, token };
+      window.localStorage.setItem('user', JSON.stringify(state.userInfo));
       state.loading = false;
     },
     signupUserError(state, action: PayloadAction<any>) {
@@ -40,6 +46,7 @@ const userSlice = createSlice({
         token,
       } = action.payload;
       state.userInfo = { email, name, token };
+      window.localStorage.setItem('user', JSON.stringify(state.userInfo));
       state.loading = false;
     },
     signinUserError(state, action: PayloadAction<any>) {
@@ -50,7 +57,7 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    logoutUserSuccess(state, action: PayloadAction<IUserResponse>) {
+    logoutUserSuccess(state) {
       state.userInfo = undefined;
       state.loading = false;
     },

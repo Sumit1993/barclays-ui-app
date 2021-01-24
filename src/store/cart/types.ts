@@ -32,6 +32,12 @@ export interface ICartItem {
   authors: string;
 }
 
+export interface IPlaceOrderRequest {
+  email: string;
+  name: string;
+  amount: number;
+  host: string;
+}
 export interface ICartInfo {
   subTotal: number;
   userId: string;
@@ -43,4 +49,5 @@ export interface CartState {
   loading: boolean;
   error: any;
 }
+
 export type ContainerState = CartState;

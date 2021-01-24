@@ -4,18 +4,7 @@
 
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { createInjectorsEnhancer } from 'redux-injectors';
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  persistReducer,
-  persistStore,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
 import { createReducer } from './reducers';
 
@@ -34,31 +23,20 @@ export function configureAppStore() {
     }),
   ];
 
-  const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage,
-    whitelist: ['user'],
-  };
-
-  const persistedReducer = persistReducer(persistConfig, createReducer());
-
   const store = configureStore({
-    reducer: persistedReducer,
+    reducer: createReducer(),
     middleware: [
       ...getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+          ignoredActions: [],
         },
       }),
       ...middlewares,
       logger,
     ],
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: true,
     enhancers,
   });
 
-  let persistor = persistStore(store);
-
-  return { store, persistor };
+  return store;
 }

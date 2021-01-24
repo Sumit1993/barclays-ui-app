@@ -1,6 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
-import { ContainerState, IAddCartRequest, ICartResponse } from './types';
+import {
+  ContainerState,
+  IAddCartRequest,
+  ICartResponse,
+  IPlaceOrderRequest,
+} from './types';
 
 // The initial state of the Cart container
 export const initialState: ContainerState = { loading: false, error: null };
@@ -30,6 +35,18 @@ const cartSlice = createSlice({
       state.loading = false;
     },
     getCartError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
+      state.loading = false;
+    },
+    placeOrder(state, action: PayloadAction<IPlaceOrderRequest>) {
+      state.loading = true;
+      state.error = null;
+    },
+    placeOrderSuccess(state, action: PayloadAction<string>) {
+      window.open(action.payload, '_self');
+      state.loading = false;
+    },
+    placeOrderError(state, action: PayloadAction<any>) {
       state.error = action.payload;
       state.loading = false;
     },

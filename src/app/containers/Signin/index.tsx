@@ -18,9 +18,18 @@ import {
 } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import * as React from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { signinSaga } from '../../../store/user/saga';
+import { selectUser } from '../../../store/user/selectors';
+import { userActions, reducer, sliceKey } from '../../../store/user/slice';
+import {
+  useInjectReducer,
+  useInjectSaga,
+} from '../../../utils/redux-injectors';
 
 import { messages } from './messages';
 
@@ -47,14 +56,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function Signin(props: Props) {
+  useInjectReducer({ key: sliceKey, reducer: reducer });
+  useInjectSaga({ key: sliceKey, saga: signinSaga });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
   const classes = useStyles();
-
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const history = useHistory();
 
-  const goToSignup = event => history.push('./signup');
+  const goToSignup = () => history.push('./signup');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const signinUser = event => {
+    event.preventDefault();
+    dispatch(userActions.signinUser({ email, password }));
+  };
+
+  React.useEffect(() => {
+    if (user.userInfo) {
+      history.replace('/');
+    }
+  }, [user]);
 
   return (
     <>
@@ -81,6 +107,7 @@ export function Signin(props: Props) {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={event => setEmail(event.target.value)}
             />
             <TextField
               variant="outlined"
@@ -92,17 +119,19 @@ export function Signin(props: Props) {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={event => setPassword(event.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={signinUser}
             >
               Sign In
             </Button>

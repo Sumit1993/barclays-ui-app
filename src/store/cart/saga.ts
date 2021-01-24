@@ -1,9 +1,10 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { StringifyOptions } from 'querystring';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { request } from '../../utils/request';
 import { selectUser } from '../user/selectors';
 import { cartActions } from './slice';
-import { IAddCartRequest, ICartResponse } from './types';
+import { IAddCartRequest, ICartResponse, IPlaceOrderRequest } from './types';
 
 /**
  * Add cart item
@@ -62,4 +63,31 @@ export function* getCart() {
 
 export function* getCartSaga() {
   yield takeLatest(cartActions.getCart.type, getCart);
+}
+
+/**
+ * Get cart
+ * @param reqBody
+ */
+
+export function* placeOrder(reqBody: PayloadAction<IPlaceOrderRequest>) {
+  const requestURL = `http://localhost:3000/api/cart/placeOrder`;
+  try {
+    const userData = yield select(selectUser);
+    const resp: { url: string } = yield call(request, requestURL, {
+      method: 'post',
+      body: JSON.stringify(reqBody.payload),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userData.userInfo.token}`,
+      },
+    });
+    yield put(cartActions.placeOrderSuccess(resp.url));
+  } catch (err) {
+    yield put(cartActions.placeOrderError('Logout Error'));
+  }
+}
+
+export function* placeOrderSaga() {
+  yield takeLatest(cartActions.placeOrder.type, placeOrder);
 }
