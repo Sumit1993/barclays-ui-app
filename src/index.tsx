@@ -28,6 +28,8 @@ import './locales/i18n';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 
+require('dotenv').config();
+
 const store = configureAppStore();
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 

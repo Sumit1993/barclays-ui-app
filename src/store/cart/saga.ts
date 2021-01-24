@@ -91,3 +91,63 @@ export function* placeOrder(reqBody: PayloadAction<IPlaceOrderRequest>) {
 export function* placeOrderSaga() {
   yield takeLatest(cartActions.placeOrder.type, placeOrder);
 }
+/**
+ * Get cart
+ * @param reqBody
+ */
+
+export function* removeItem(reqBody: PayloadAction<IPlaceOrderRequest>) {
+  const requestURL = `http://localhost:3000/api/cart/removeItem`;
+  try {
+    const userData = yield select(selectUser);
+    const resp: ICartResponse = yield call(request, requestURL, {
+      method: 'post',
+      body: JSON.stringify(reqBody.payload),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userData.userInfo.token}`,
+      },
+    });
+    if (resp) {
+      yield put(cartActions.removeItemSuccess(resp));
+    } else {
+      yield put(cartActions.removeItemError('Signup Error'));
+    }
+  } catch (err) {
+    yield put(cartActions.removeItemError('Logout Error'));
+  }
+}
+
+export function* removeItemSaga() {
+  yield takeLatest(cartActions.removeItem.type, removeItem);
+}
+/**
+ * Get cart
+ * @param reqBody
+ */
+
+export function* updateQuantity(reqBody: PayloadAction<IPlaceOrderRequest>) {
+  const requestURL = `http://localhost:3000/api/cart/updateQuantiy`;
+  try {
+    const userData = yield select(selectUser);
+    const resp: ICartResponse = yield call(request, requestURL, {
+      method: 'post',
+      body: JSON.stringify(reqBody.payload),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userData.userInfo.token}`,
+      },
+    });
+    if (resp) {
+      yield put(cartActions.updateQuantitySuccess(resp));
+    } else {
+      yield put(cartActions.updateQuantityError('Signup Error'));
+    }
+  } catch (err) {
+    yield put(cartActions.updateQuantityError('Logout Error'));
+  }
+}
+
+export function* updateQuantitySaga() {
+  yield takeLatest(cartActions.updateQuantity.type, updateQuantity);
+}

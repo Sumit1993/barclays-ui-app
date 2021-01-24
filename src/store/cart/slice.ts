@@ -50,6 +50,33 @@ const cartSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    removeItem(state, action: PayloadAction<IAddCartRequest>) {
+      state.loading = true;
+      state.error = null;
+    },
+    removeItemSuccess(state, action: PayloadAction<ICartResponse>) {
+      state.cartInfo = action.payload;
+      state.loading = false;
+    },
+    removeItemError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
+      state.loading = false;
+    },
+    updateQuantity(
+      state,
+      action: PayloadAction<IAddCartRequest & { quantity: number }>,
+    ) {
+      state.loading = true;
+      state.error = null;
+    },
+    updateQuantitySuccess(state, action: PayloadAction<ICartResponse>) {
+      state.cartInfo = action.payload;
+      state.loading = false;
+    },
+    updateQuantityError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
 
