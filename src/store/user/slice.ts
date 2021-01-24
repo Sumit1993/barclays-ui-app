@@ -59,6 +59,7 @@ const userSlice = createSlice({
     },
     logoutUserSuccess(state) {
       state.userInfo = undefined;
+      window.localStorage.removeItem('user');
       state.loading = false;
     },
     logoutUserError(state, action: PayloadAction<any>) {

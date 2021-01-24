@@ -59,14 +59,14 @@ export const CartItems = memo((props: Props) => {
 
   const dispatch = useDispatch();
   const placeOrder = () =>
-    dispatch(
+    {debugger;dispatch(
       cartActions.placeOrder({
         amount: props.subTotal,
         email: user.userInfo ? user.userInfo.email : '',
         name: user.userInfo ? user.userInfo.name : '',
         host: window.location.origin,
       }),
-    );
+    )};
   const classes = useStyles();
 
   return (
