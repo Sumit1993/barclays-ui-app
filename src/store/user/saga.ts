@@ -11,7 +11,7 @@ import { selectUser } from './selectors';
  */
 
 export function* signupUser(reqBody: PayloadAction<ISignupRequest>) {
-  const requestURL = `http://localhost:3000/api/auth/signup`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/auth/signup`;
   try {
     const user: IUserResponse = yield call(request, requestURL, {
       method: 'post',
@@ -38,7 +38,7 @@ export function* signupSaga() {
  */
 
 export function* signinUser(reqBody: PayloadAction<ISigninRequest>) {
-  const requestURL = `http://localhost:3000/api/auth/signin`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/auth/signin`;
   try {
     const user: IUserResponse = yield call(request, requestURL, {
       method: 'post',
@@ -65,7 +65,7 @@ export function* signinSaga() {
  */
 
 export function* logoutUser() {
-  const requestURL = `http://localhost:3000/api/auth/logout`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/auth/logout`;
   try {
     const userData = yield select(selectUser);
     yield call(request, requestURL, {

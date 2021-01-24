@@ -12,7 +12,7 @@ import { IAddCartRequest, ICartResponse, IPlaceOrderRequest } from './types';
  */
 
 export function* addCartItem(reqBody: PayloadAction<IAddCartRequest>) {
-  const requestURL = `http://localhost:3000/api/cart/addItem`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/cart/addItem`;
   try {
     const userData = yield select(selectUser);
     const user: ICartResponse = yield call(request, requestURL, {
@@ -43,7 +43,7 @@ export function* addCartSaga() {
  */
 
 export function* getCart() {
-  const requestURL = `http://localhost:3000/api/cart/getAll`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/cart/getAll`;
   try {
     const userData = yield select(selectUser);
     const user: ICartResponse = yield call(request, requestURL, {
@@ -71,7 +71,7 @@ export function* getCartSaga() {
  */
 
 export function* placeOrder(reqBody: PayloadAction<IPlaceOrderRequest>) {
-  const requestURL = `http://localhost:3000/api/cart/placeOrder`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/cart/placeOrder`;
   try {
     const userData = yield select(selectUser);
     const resp: { url: string } = yield call(request, requestURL, {
@@ -97,7 +97,7 @@ export function* placeOrderSaga() {
  */
 
 export function* removeItem(reqBody: PayloadAction<IPlaceOrderRequest>) {
-  const requestURL = `http://localhost:3000/api/cart/removeItem`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/cart/removeItem`;
   try {
     const userData = yield select(selectUser);
     const resp: ICartResponse = yield call(request, requestURL, {
@@ -127,7 +127,7 @@ export function* removeItemSaga() {
  */
 
 export function* updateQuantity(reqBody: PayloadAction<IPlaceOrderRequest>) {
-  const requestURL = `http://localhost:3000/api/cart/updateQuantiy`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/cart/updateQuantiy`;
   try {
     const userData = yield select(selectUser);
     const resp: ICartResponse = yield call(request, requestURL, {

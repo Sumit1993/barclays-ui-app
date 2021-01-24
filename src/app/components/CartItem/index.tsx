@@ -76,8 +76,10 @@ export function CartItem(props: Props) {
         </ButtonBase>
       </Grid>
       <Grid item xs={12} sm={6} md={8}>
-        <Typography variant="h5">{item.title}</Typography>
-        <Typography color="textSecondary" variant="caption">
+        <Typography variant="h5" noWrap>
+          {item.title}
+        </Typography>
+        <Typography color="textSecondary" variant="caption" noWrap>
           {item.authors}
         </Typography>
         <Typography variant="h5" className={classes.price}>

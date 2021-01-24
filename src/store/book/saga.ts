@@ -11,7 +11,7 @@ import { selectUser } from '../user/selectors';
  */
 
 export function* searchBooks(reqBody: PayloadAction<ISearchBookRequest>) {
-  const requestURL = `http://localhost:3000/api/books/search`;
+  const requestURL = `https://barclays-api-app.herokuapp.com/api/books/search`;
   try {
     const userData = yield select(selectUser);
     const books: IBookResponse = yield call(request, requestURL, {
