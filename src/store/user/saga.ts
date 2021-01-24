@@ -64,13 +64,13 @@ export function* signinSaga() {
  * @param reqBody
  */
 
-export function* logoutUser(reqBody) {
+export function* logoutUser() {
   const requestURL = `http://localhost:3000/api/auth/logout`;
   try {
-    const userInfo = yield select(selectUser);
+    const userData = yield select(selectUser);
     const user: IUserResponse = yield call(request, requestURL, {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userData.userInfo.token}`,
       },
     });
     if (user) {

@@ -23,10 +23,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { messages } from './messages';
 import { ISignupRequest } from '../../../store/user/types';
-import { useDispatch } from 'react-redux';
-import { sliceKey, userActions } from '../../../store/user/slice';
-import { useInjectSaga } from 'redux-injectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { reducer, sliceKey, userActions } from '../../../store/user/slice';
+import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { signupSaga } from '../../../store/user/saga';
+import { selectUser } from '../../../store/user/selectors';
+import { useHistory } from 'react-router-dom';
 
 interface Props {}
 
@@ -51,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function Signup(props: Props) {
+  useInjectReducer({ key: sliceKey, reducer: reducer });
   useInjectSaga({ key: sliceKey, saga: signupSaga });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
@@ -70,6 +73,15 @@ export function Signup(props: Props) {
     };
     dispatch(userActions.signupUser(signupInfo));
   };
+
+  const user = useSelector(selectUser);
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (user.userInfo) {
+      history.replace('/');
+    }
+  }, [user]);
 
   return (
     <>

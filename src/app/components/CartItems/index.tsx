@@ -75,7 +75,7 @@ export const CartItems = memo((props: Props) => {
         </Typography>
         <Divider variant="middle" />
         {cards.map(item => (
-          <CartItem {...{ item }} />
+          <CartItem key={item.bookID} {...{ item }} />
         ))}
         <Divider variant="middle" />
         <Box component="div" className={classes.btnContainer}>

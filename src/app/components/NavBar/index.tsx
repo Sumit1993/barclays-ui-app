@@ -25,13 +25,19 @@ import { AccountCircle } from '@material-ui/icons';
 import { useStyles } from './styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { userActions } from '../../../store/user/slice';
+import { sliceKey as sliceKey1, userActions } from '../../../store/user/slice';
+import { logoutSaga } from '../../../store/user/saga';
+import { useInjectSaga } from 'redux-injectors';
+import { bookActions, sliceKey } from '../../../store/book/slice';
+import { searchBookSaga } from '../../../store/book/saga';
 
 interface Props {
   isLoggedin: boolean;
 }
 
 export function NavBar(props: Props) {
+  useInjectSaga({ key: sliceKey1, saga: logoutSaga });
+  useInjectSaga({ key: sliceKey, saga: searchBookSaga });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
@@ -77,6 +83,19 @@ export function NavBar(props: Props) {
     history.push('./signup');
     handleMenuClose();
   };
+
+  const [searchText,setSearch] = React.useState("");
+
+  React.useEffect(() => {
+    if (props.isLoggedin) {
+      dispatch(
+        bookActions.searchBook({
+          searchText: searchText,
+          paginationOptions: { page: 1, limit: 10, sort: 'average_rating' },
+        }),
+      );
+    }
+  }, [props.isLoggedin,searchText]);
 
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
@@ -181,6 +200,7 @@ export function NavBar(props: Props) {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                onChange={(event)=>setSearch(event.target.value)}
               />
             </div>
           )}

@@ -51,7 +51,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     logoutUserSuccess(state, action: PayloadAction<IUserResponse>) {
-      Reflect.deleteProperty(state, 'userInfo');
+      state.userInfo = undefined;
       state.loading = false;
     },
     logoutUserError(state, action: PayloadAction<any>) {

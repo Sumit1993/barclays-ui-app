@@ -16,7 +16,7 @@ import {
 } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import storage from 'redux-persist/lib/storage';
-
+import logger from 'redux-logger';
 import { createReducer } from './reducers';
 
 export function configureAppStore() {
@@ -38,6 +38,7 @@ export function configureAppStore() {
     key: 'root',
     version: 1,
     storage,
+    whitelist: ['user'],
   };
 
   const persistedReducer = persistReducer(persistConfig, createReducer());
@@ -51,6 +52,7 @@ export function configureAppStore() {
         },
       }),
       ...middlewares,
+      logger,
     ],
     devTools: process.env.NODE_ENV !== 'production',
     enhancers,

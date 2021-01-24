@@ -7,7 +7,8 @@ describe('<BookCard  />', () => {
   it('should match snapshot', () => {
     const loadingIndicator = render(
       <BookCard
-        card={{
+        book={{
+          _id: '1',
           bookID: 1,
           title: 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)',
           authors: 'J.K. Rowling-Mary GrandPré',
