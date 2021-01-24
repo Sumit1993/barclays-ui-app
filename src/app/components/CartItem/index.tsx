@@ -15,16 +15,17 @@ import {
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
+import { ICartItem } from '../../../store/cart/types';
 import { messages } from './messages';
 
 interface Props {
-  item: any;
+  item: ICartItem;
 }
 
 const useStyles = makeStyles(theme => ({
   image: {
-    width: '15em',
-    height: '15em',
+    width: '12em',
+    height: '12em',
   },
   img: {
     margin: 'auto',
@@ -68,7 +69,7 @@ export function CartItem(props: Props) {
           <TextField
             id="standard-read-only-input"
             variant="outlined"
-            value="1"
+            value={item.quantity}
             size="small"
             type="number"
             InputProps={{

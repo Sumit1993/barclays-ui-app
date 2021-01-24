@@ -17,6 +17,7 @@ import {
   Menu,
   MenuItem,
   Box,
+  ButtonBase,
 } from '@material-ui/core';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import SearchIcon from '@material-ui/icons/Search';
@@ -24,20 +25,39 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { AccountCircle } from '@material-ui/icons';
 import { useStyles } from './styles';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { sliceKey as sliceKey1, userActions } from '../../../store/user/slice';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutSaga } from '../../../store/user/saga';
-import { useInjectSaga } from 'redux-injectors';
-import { bookActions, sliceKey } from '../../../store/book/slice';
+import { useInjectSaga, useInjectReducer } from 'redux-injectors';
+import {
+  userActions,
+  reducer as reducer1,
+  sliceKey as sliceKey1,
+} from '../../../store/user/slice';
+import {
+  bookActions,
+  sliceKey as sliceKey2,
+  reducer as reducer2,
+} from '../../../store/book/slice';
+import {
+  cartActions,
+  sliceKey as sliceKey3,
+  reducer as reducer3,
+} from '../../../store/cart/slice';
 import { searchBookSaga } from '../../../store/book/saga';
+import { selectCart } from '../../../store/cart/selectors';
 
 interface Props {
   isLoggedin: boolean;
 }
 
 export function NavBar(props: Props) {
+  useInjectReducer({ key: sliceKey1, reducer: reducer1 });
   useInjectSaga({ key: sliceKey1, saga: logoutSaga });
-  useInjectSaga({ key: sliceKey, saga: searchBookSaga });
+  useInjectReducer({ key: sliceKey2, reducer: reducer2 });
+  useInjectSaga({ key: sliceKey2, saga: searchBookSaga });
+  useInjectReducer({ key: sliceKey3, reducer: reducer3 });
+
+  const cart = useSelector(selectCart);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
@@ -67,7 +87,11 @@ export function NavBar(props: Props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const goToCart = event => {
+  const goToHome = () => {
+    history.replace('/');
+  };
+
+  const goToCart = () => {
     history.push('./cart');
     handleMenuClose();
   };
@@ -84,7 +108,7 @@ export function NavBar(props: Props) {
     handleMenuClose();
   };
 
-  const [searchText,setSearch] = React.useState("");
+  const [searchText, setSearch] = React.useState('');
 
   React.useEffect(() => {
     if (props.isLoggedin) {
@@ -95,7 +119,7 @@ export function NavBar(props: Props) {
         }),
       );
     }
-  }, [props.isLoggedin,searchText]);
+  }, [props.isLoggedin, searchText]);
 
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
@@ -134,7 +158,10 @@ export function NavBar(props: Props) {
         <Box>
           <MenuItem onClick={goToCart}>
             <IconButton aria-label="show 11 new notifications" color="inherit">
-              <Badge badgeContent={11} color="secondary">
+              <Badge
+                badgeContent={cart.cartInfo?.items.length || 0}
+                color="secondary"
+              >
                 <ShoppingCart />
               </Badge>
             </IconButton>
@@ -185,9 +212,11 @@ export function NavBar(props: Props) {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Books
-          </Typography>
+          <ButtonBase onClick={goToHome}>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Books
+            </Typography>
+          </ButtonBase>
           {props.isLoggedin && (
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -200,7 +229,7 @@ export function NavBar(props: Props) {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
-                onChange={(event)=>setSearch(event.target.value)}
+                onChange={event => setSearch(event.target.value)}
               />
             </div>
           )}
@@ -212,7 +241,10 @@ export function NavBar(props: Props) {
                 color="inherit"
                 onClick={goToCart}
               >
-                <Badge badgeContent={17} color="secondary">
+                <Badge
+                  badgeContent={cart.cartInfo?.items.length || 0}
+                  color="secondary"
+                >
                   <ShoppingCart />
                 </Badge>
               </IconButton>

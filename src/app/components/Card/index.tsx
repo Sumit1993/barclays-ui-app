@@ -19,18 +19,30 @@ import {
 import { Rating } from '@material-ui/lab';
 import { useStyles } from './styles';
 import { IBookInfo } from '../../../store/book/types';
+import { useDispatch } from 'react-redux';
+import { cartActions, reducer, sliceKey } from '../../../store/cart/slice';
+import {
+  useInjectReducer,
+  useInjectSaga,
+} from '../../../utils/redux-injectors';
+import { addCartSaga } from '../../../store/cart/saga';
 
 interface Props {
   book: IBookInfo;
 }
 
 export const BookCard = memo((props: Props) => {
+  useInjectReducer({ key: sliceKey, reducer: reducer });
+  useInjectSaga({ key: sliceKey, saga: addCartSaga });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const { book } = props;
+
+  const addToCart = () =>
+    dispatch(cartActions.addItem({ bookId: book.bookID }));
 
   return (
     <Grid item xs={12} sm={4} md={4}>
@@ -90,7 +102,7 @@ export const BookCard = memo((props: Props) => {
           </div>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={addToCart}>
             Add to cart
           </Button>
         </CardActions>

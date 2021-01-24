@@ -10,10 +10,10 @@ import { NavBar as NavBarComponent } from '../../components/NavBar/index';
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { signinSaga } from '../../../store/user/saga';
 import { reducer, sliceKey } from '../../../store/user/slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUser } from '../../../store/user/selectors';
 import { useHistory } from 'react-router-dom';
-import { bookActions } from '../../../store/book/slice';
+
 interface Props {}
 
 export function NavBar(props: Props) {

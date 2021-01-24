@@ -8,7 +8,9 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { messages } from './messages';
 
-interface Props {}
+interface Props {
+  subTotal: number;
+}
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -40,7 +42,7 @@ export const CartPrice = memo((props: Props) => {
       item
       sm={5}
       md={3}
-      justify="center"
+      justify="flex-start"
       alignItems="center"
       className={classes.grid}
     >
@@ -53,7 +55,7 @@ export const CartPrice = memo((props: Props) => {
           <Typography color="textSecondary" variant="body1">
             Price
           </Typography>
-          <Typography variant="body1">1656161</Typography>
+          <Typography variant="body1">{props.subTotal}</Typography>
         </div>
         <div className={classes.priceDetail}>
           <Typography color="textSecondary" variant="body1">
@@ -70,7 +72,7 @@ export const CartPrice = memo((props: Props) => {
         <Divider variant="middle" />
         <div className={classes.priceDetail}>
           <Typography variant="h6">Total Amount</Typography>
-          <Typography variant="h6">Total Amount</Typography>
+          <Typography variant="h6">{props.subTotal}</Typography>
         </div>
       </Box>
     </Grid>

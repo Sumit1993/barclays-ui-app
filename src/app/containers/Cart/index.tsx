@@ -10,20 +10,20 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { reducer, sliceKey } from './slice';
-import { selectCart } from './selectors';
-import { cartSaga } from './saga';
+import { reducer, sliceKey } from '../../../store/cart/slice';
+import { selectCart } from '../../../store/cart/selectors';
+import { addCartSaga } from '../../../store/cart/saga';
 import { messages } from './messages';
-import { Grid } from '@material-ui/core';
 import { EmptyCart } from '../../components/EmptyCart/Loadable';
 import { CartItems } from '../../components/CartItems/Loadable';
 import { CartPrice } from '../../components/CartPrice/Loadable';
+import { Grid } from '@material-ui/core';
 
 interface Props {}
 
 export function Cart(props: Props) {
   useInjectReducer({ key: sliceKey, reducer: reducer });
-  useInjectSaga({ key: sliceKey, saga: cartSaga });
+  useInjectSaga({ key: sliceKey, saga: addCartSaga });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cart = useSelector(selectCart);
@@ -33,18 +33,20 @@ export function Cart(props: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation();
 
-  const isEmpty = false;
   return (
     <>
       <Helmet>
         <title>Cart</title>
         <meta name="description" content="Description of Cart" />
       </Helmet>
-      {isEmpty && <EmptyCart />}
-      <Grid container>
-        <CartItems />
-        <CartPrice />
-      </Grid>
+      {cart.cartInfo?.items.length ? (
+        <Grid container justify="flex-start">
+          <CartItems items={cart.cartInfo.items} />
+          <CartPrice subTotal={cart.cartInfo.subTotal} />
+        </Grid>
+      ) : (
+        <EmptyCart />
+      )}
     </>
   );
 }
